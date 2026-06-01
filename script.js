@@ -1,5 +1,7 @@
-const firstNumber = "";
-const secondNumber = "";
+let firstNumber = "";
+let secondNumber = "";
+let currentOperator = "";
+ 
 
 function addNumbers (a, b) {
     return a + b;
