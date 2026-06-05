@@ -6,7 +6,7 @@ let numberButton = document.querySelectorAll('.number-btn');
 let operatorButtons = document.querySelectorAll('.operator-btn');
 let eqlButton = document.querySelector('.equal-btn');
 let btnBackspace = document.querySelector('.backspace');
-let btnDecimal = document.querySelector('.coma-btn');
+let btnDecimal = document.querySelector('.comma-btn');
 let shouldResetScreen = false;
 let fromEqual = false;
 
@@ -59,12 +59,29 @@ btnClear.addEventListener ("click", (e) =>{
 
 operatorButtons.forEach (button => {
     button.addEventListener('click', (e) => {
-    currentOperator = e.target.textContent;
-    if (!fromEqual) {
+        
+
+        if (shouldResetScreen && !fromEqual) {
+            currentOperator = e.target.textContent;
+            return; 
+        }
+
+        if (currentOperator !== "" && secondNumber !== "" && !fromEqual) {
+            let result = operate(currentOperator, secondNumber, firstNumber);
+
+            result = Math.round(result * 100000) / 100000; 
+            
+            display.textContent = result;
+            secondNumber = String(result); 
+        } 
+
+        else if (!fromEqual) {
             secondNumber = firstNumber;
         }
-    shouldResetScreen = true;
-    fromEqual = false;
+
+        currentOperator = e.target.textContent;
+        shouldResetScreen = true;
+        fromEqual = false;
     });
 });
 
@@ -130,4 +147,4 @@ btnDecimal.addEventListener ('click', (e) => {
 
 
     display.textContent = firstNumber;
-});
+})
