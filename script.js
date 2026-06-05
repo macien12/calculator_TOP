@@ -148,3 +148,48 @@ btnDecimal.addEventListener ('click', (e) => {
 
     display.textContent = firstNumber;
 })
+
+window.addEventListener('keydown', (e) => {
+    // 1. Prevent default browser behavior for certain keys (like '/' opening search)
+    if (e.key === '/' || e.key === 'Enter') {
+        e.preventDefault();
+    }
+
+    // 2. Handle Numbers (0-9)
+    if (e.key >= '0' && e.key <= '9') {
+        numberButton.forEach(button => {
+            if (button.textContent === e.key) {
+                button.click();
+            }
+        });
+    }
+
+    // 3. Handle Operators (+, -, *, /)
+    if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        operatorButtons.forEach(button => {
+            if (button.textContent === e.key) {
+                button.click();
+            }
+        });
+    }
+
+    // 4. Handle Equals (Enter or =)
+    if (e.key === 'Enter' || e.key === '=') {
+        eqlButton.click();
+    }
+
+    // 5. Handle Backspace
+    if (e.key === 'Backspace') {
+        btnBackspace.click();
+    }
+
+    // 6. Handle Clear (Escape key)
+    if (e.key === 'Escape') {
+        btnClear.click();
+    }
+
+    // 7. Handle Decimal (. or ,)
+    if (e.key === '.' || e.key === ',') {
+        btnDecimal.click();
+    }
+});
