@@ -5,6 +5,8 @@ let display = document.getElementById('display');
 let numberButton = document.querySelectorAll('.number-btn');
 let operatorButtons = document.querySelectorAll('.operator-btn');
 let eqlButton = document.querySelector('.equal-btn');
+let btnBackspace = document.querySelector('.backspace');
+let btnDecimal = document.querySelector('.coma-btn');
 let shouldResetScreen = false;
 let fromEqual = false;
 
@@ -84,8 +86,48 @@ function operate(operator, a, b) {
 eqlButton.addEventListener ("click", (e) => {
     if (!currentOperator || !firstNumber || !secondNumber) return;
         let result = operate(currentOperator, secondNumber, firstNumber);
+        result = Math.round (result * 100000) / 100000;
         display.textContent = result;
         secondNumber = String(result);
         shouldResetScreen = true;
         fromEqual = true;
 })
+
+btnBackspace.addEventListener ("click", (e) => {
+    if (fromEqual) return;
+    firstNumber = firstNumber.slice(0, -1); 
+    if (firstNumber === ""){
+        display.textContent = "0";
+    } else {
+        display.textContent = firstNumber;
+    }
+})
+
+btnDecimal.addEventListener ('click', (e) => {
+    if (fromEqual) {
+        firstNumber = "";
+        secondNumber = "";
+        currentOperator = "";
+        fromEqual = false;
+    }
+
+    
+    if (shouldResetScreen) {
+        display.textContent = "";
+        firstNumber = ""; 
+        shouldResetScreen = false;
+    }
+
+
+    if (firstNumber.includes(".")) return;
+
+   
+    if (firstNumber === "") {
+        firstNumber = "0.";
+    } else {
+        firstNumber += ".";
+    }
+
+
+    display.textContent = firstNumber;
+});
