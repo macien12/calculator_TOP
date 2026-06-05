@@ -6,6 +6,7 @@ let numberButton = document.querySelectorAll('.number-btn');
 let operatorButtons = document.querySelectorAll('.operator-btn');
 let eqlButton = document.querySelector('.equal-btn');
 let shouldResetScreen = false;
+let fromEqual = false;
 
 function addNumbers (a, b) {
     return a + b;
@@ -26,11 +27,18 @@ function divide(a, b) {
 numberButton.forEach(button => {
     button.addEventListener('click', (e) => {
 
-    if (shouldResetScreen) {
+        if (fromEqual) {
+            firstNumber = "";
+            secondNumber = "";
+            currentOperator = "";
+            fromEqual = false;
+        }
+
+        if (shouldResetScreen) {
             display.textContent = "";
+            firstNumber = "";
             shouldResetScreen = false;
         }
-        
         firstNumber += e.target.textContent; 
         display.textContent = firstNumber;
     });
@@ -43,15 +51,18 @@ btnClear.addEventListener ("click", (e) =>{
     secondNumber = "";
     currentOperator = "";
     display.textContent = "0";
+    fromEqual = false;
 } )
 
 
 operatorButtons.forEach (button => {
     button.addEventListener('click', (e) => {
     currentOperator = e.target.textContent;
-    secondNumber = firstNumber;
-    firstNumber = "";
+    if (!fromEqual) {
+            secondNumber = firstNumber;
+        }
     shouldResetScreen = true;
+    fromEqual = false;
     });
 });
 
@@ -71,6 +82,10 @@ function operate(operator, a, b) {
 }
 
 eqlButton.addEventListener ("click", (e) => {
+    if (!currentOperator || !firstNumber || !secondNumber) return;
         let result = operate(currentOperator, secondNumber, firstNumber);
         display.textContent = result;
+        secondNumber = String(result);
+        shouldResetScreen = true;
+        fromEqual = true;
 })
